@@ -28,7 +28,7 @@ npx json-server db.json
 
 
 ```bash
-# Clone o repositório
+# Clone o repositório  do projeto, no mesmo nível de pasta do mock acima
 git clone https://github.com/AriadneSilva/code-frontend-challenge-betalent
 
 # Instale as dependências
