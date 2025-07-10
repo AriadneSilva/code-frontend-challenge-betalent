@@ -1,21 +1,17 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, ChangeEvent } from "react";
 import { TableColumn } from "react-data-table-component";
 
+import { SearchInput } from "../../components/SearchInput";
 import { DataTableBase } from "../../components/DataTableBase";
-import { FilterTable } from "../../components/DataTableBase/FilterTable";
+import { Thumbnail } from "../../components/Thumbnail";
+import { Header } from "../../components/Header";
 
 import { useEmployees } from "../../hooks/useEmployess";
 import { EmployeesData } from "../../types/employees";
 
-import { Container, SubheaderContainer, MoreFiltersContainer } from "./styles";
+import ThumbLogo from "../../assets/Thumbnail_logo.png";
 
-interface FilterOption {
-  [key: string]: boolean;
-}
-
-interface Filters {
-  [key: string]: FilterOption;
-}
+import { Container, Avatar } from "./styles";
 
 export const Home = () => {
   const { dataEmployees, getDataEmployees } = useEmployees();
@@ -24,189 +20,67 @@ export const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [filterText, setFilterText] = useState("");
-  const [filtersSelected, setFiltersSelected] = useState<string[]>([]);
-  const moreFiltersOptionsInitialValue = {};
+  const [search, setSearch] = useState("");
 
-  const [moreFiltersOptions, setMoreFiltersOptions] = useState<Filters>(
-    moreFiltersOptionsInitialValue
-  );
-
-  // const handleCheckFilter = (
-  //   newValue: boolean,
-  //   filter: string,
-  //   itemLabel: string
-  // ) => {
-  //   if (newValue) {
-  //     setFiltersSelected([...filtersSelected, itemLabel]);
-  //   } else {
-  //     const newFilters = filtersSelected.filter(
-  //       (filterSelected) => filterSelected !== itemLabel
-  //     );
-  //     setFiltersSelected(newFilters);
-  //   }
-  // };
-
-  const handleCheckFilter = (
-    newValue: boolean,
-    filter: string,
-    itemLabel: string
-  ) => {
-    const newFilterBlock = moreFiltersOptions[filter];
-    newFilterBlock[itemLabel] = newValue;
-
-    if (newValue) {
-      setFiltersSelected([...filtersSelected, itemLabel]);
-    } else {
-      const newFilters = filtersSelected.filter(
-        (filterSelected) => filterSelected !== itemLabel
-      );
-      setFiltersSelected(newFilters);
-    }
-
-    setMoreFiltersOptions({
-      ...moreFiltersOptions,
-      [filter]: newFilterBlock,
-    });
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
   };
+
+  // criar um util.js depois
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("pt-BR");
+  }
+
+  function formatPhone(phone: string) {
+    return phone.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+  }
+
+  const filteredUsers = useMemo(() => {
+    const lower = search.toLowerCase();
+    return dataEmployees.filter(
+      (user) =>
+        user.name.toLowerCase().includes(lower) ||
+        user.job.toLowerCase().includes(lower) ||
+        user.phone.includes(lower)
+    );
+  }, [dataEmployees, search]);
+
   const columns: TableColumn<EmployeesData>[] = [
     {
       name: "Foto",
-      selector: ({ image }) => image,
-      cell: (row: EmployeesData) => <div>{row.image}</div>,
-      sortable: true,
-      width: "10rem",
+      selector: (row) => row.image,
+      cell: (row) => <Avatar src={row.image} alt={row.name} />,
+      width: "80px",
     },
     {
       name: "Nome",
-      selector: ({ name }) => name,
-      cell: (row: EmployeesData) => <div>{row.name}</div>,
+      selector: (row) => row.name,
       sortable: true,
-      width: "10rem",
     },
     {
       name: "Cargo",
-      selector: ({ job }) => job,
-      cell: (row: EmployeesData) => <div>{row.job}</div>,
+      selector: (row) => row.job,
       sortable: true,
-      width: "10rem",
     },
     {
-      name: "Data de Admissao",
-      selector: ({ admission_date }) => admission_date,
-      cell: (row: EmployeesData) => <div>{row.admission_date}</div>,
+      name: "Data de admissão",
+      selector: (row) => formatDate(row.admission_date),
       sortable: true,
-      width: "10rem",
     },
     {
       name: "Telefone",
-      selector: ({ phone }) => phone,
-      cell: (row: EmployeesData) => <div>{row.phone}</div>,
-      sortable: true,
-      width: "10rem",
+      selector: (row) => formatPhone(row.phone),
     },
   ];
-
-  const filteredItems = dataEmployees.filter((row) => {
-    if (filterText === "") {
-      if (filtersSelected.length === 0) {
-        return dataEmployees;
-      }
-      return [].some((value) => filtersSelected.includes(value));
-    }
-
-    if (filtersSelected.length === 0) {
-      return JSON.stringify([row.name, row.job, row.phone, row.admission_date])
-        .toLowerCase()
-        .includes(filterText.toLowerCase());
-    }
-
-    return (
-      [].some((value) => filtersSelected.includes(value)) &&
-      JSON.stringify([row.name, row.job, row.phone, row.admission_date])
-        .toLowerCase()
-        .includes(filterText.toLowerCase())
-    );
-  });
-
-  const SubheaderComponent = useMemo(() => {
-    const handleClear = () => {
-      setFilterText("");
-      setFiltersSelected([]);
-    };
-
-    return (
-      <SubheaderContainer>
-        <FilterTable
-          placeholder="Busque por nome, e-mail ou empresa"
-          onFilter={(event) => setFilterText(event.target.value)}
-          onClear={handleClear}
-          filterText={filterText}
-          hasMoreFilters
-          numberOfSelectedFilters={filtersSelected.length}
-          MoreFiltersComponent={
-            <MoreFiltersContainer>
-              {Object.entries(moreFiltersOptions).map(([title, items]) => (
-                <div key={title}>
-                  <h3 key={title}>{title}</h3>
-                  {/* {Object.entries(items).map(([itemLabel, checked]) => (
-                    <Checkbox
-                      key={itemLabel}
-                      labelText={itemLabel}
-                      checked={checked}
-                      onChange={(event) =>
-                        handleCheckFilter(
-                          event.target.checked,
-                          title,
-                          itemLabel
-                        )
-                      }
-                    />
-                  ))} */}
-                </div>
-              ))}
-            </MoreFiltersContainer>
-          }
-        />
-
-        {/* <AddNewPersonButton
-          onClick={(event) => {
-            event.preventDefault();
-            navigate("person/add/verification");
-            // TODO: Continuar usando useHistory() pra quando adicionar pessoa for uma feature
-            // const oldFoundationUrl = process.env.REACT_APP_TERA_FOUNDATION_V1_URL + 'community/person'
-            // window.open(oldFoundationUrl)
-          }}
-        >
-          <PlusCircle color="var(--white)" size={20} />
-          Nova Pessoa
-        </AddNewPersonButton> */}
-      </SubheaderContainer>
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterText]);
 
   return (
     <>
       <Container>
-        {/* {isLoading && (
-          <LoadingContainer>
-            <Loading />
-          </LoadingContainer>
-        )} */}
+        <Header />
+        <SearchInput value={search} onChange={handleSearch} />
 
-        <DataTableBase
-          columns={columns}
-          data={filteredItems}
-          noDataComponent={`${
-            filteredItems.length === 0
-              ? "Carregando..."
-              : "Nenhum dado encontrado"
-          }`}
-          pagination
-          subHeader
-          subHeaderComponent={SubheaderComponent}
-        />
+        <DataTableBase columns={columns} data={filteredUsers || []} />
       </Container>
     </>
   );

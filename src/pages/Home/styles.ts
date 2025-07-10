@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Container = styled.div`
   margin: 2rem auto 0;
-  width: 90%;
+  width: 100%;
   position: relative;
 
   h1 {
@@ -14,7 +14,8 @@ export const Container = styled.div`
     color: var(--gray-80);
     text-decoration: none;
   }
-`
+`;
+
 export const LoadingContainer = styled.div`
   width: 100%;
   height: 83.3%;
@@ -26,7 +27,7 @@ export const LoadingContainer = styled.div`
   position: absolute;
   background: rgba(255, 255, 255, 0.75);
   z-index: 4;
-`
+`;
 export const AddNewPersonButton = styled.button`
   align-items: center;
   background: var(--blue-primary);
@@ -46,7 +47,7 @@ export const AddNewPersonButton = styled.button`
   svg {
     margin-right: 0.5rem;
   }
-`
+`;
 
 export const SubheaderContainer = styled.div`
   align-items: center;
@@ -54,7 +55,7 @@ export const SubheaderContainer = styled.div`
   justify-content: space-between;
   margin-bottom: 2.5rem;
   width: 100%;
-`
+`;
 
 export const MoreFiltersContainer = styled.div`
   background: var(--white);
@@ -90,7 +91,7 @@ export const MoreFiltersContainer = styled.div`
       margin: 1rem 0;
     }
   }
-`
+`;
 
 export const PaginationContainer = styled.div`
   border-top: 1px solid var(--gray-20);
@@ -135,4 +136,18 @@ export const PaginationContainer = styled.div`
       }
     }
   }
-`
+`;
+
+export const SubHeaderContainer = styled.div`
+  display: flex;
+  margin-bottom: 2rem;
+  align-items: center;
+  flex: 1;
+`;
+
+export const Avatar = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
