@@ -1,12 +1,5 @@
 import styled from "styled-components";
 
-export const InputWrapper = styled.div`
-  width: 100%;
-  padding: 1rem;
-  display: flex;
-  justify-content: flex-end;
-`;
-
 export const Input = styled.input`
   padding: 0.6rem 1rem;
   font-size: 1rem;

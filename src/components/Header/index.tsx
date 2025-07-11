@@ -1,15 +1,11 @@
-import { Container, Title } from "./styles";
+import { Container } from "./styles";
 import { Thumbnail } from "../Thumbnail";
 import ThumbLogo from "../../assets/Thumbnail_logo.png";
 
-type Props = {
-  title?: string;
-
-};
-
-export function Header({ title = "Colaboradores" }: Props) {
-  return (    
+export function Header() {
+  return (
+    <Container>
       <Thumbnail src={ThumbLogo} />
-    
+    </Container>
   );
 }

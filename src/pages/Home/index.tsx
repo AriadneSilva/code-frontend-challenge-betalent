@@ -3,22 +3,14 @@ import { TableColumn } from "react-data-table-component";
 
 import { SearchInput } from "../../components/SearchInput";
 import { DataTableBase } from "../../components/DataTableBase";
-import { Thumbnail } from "../../components/Thumbnail";
-import { Header } from "../../components/Header";
 
 import { useEmployees } from "../../hooks/useEmployess";
 import { EmployeesData } from "../../types/employees";
 
-import ThumbLogo from "../../assets/Thumbnail_logo.png";
-
-import { Container, Avatar } from "./styles";
+import { Container, Avatar, SearchContainer, Title } from "./styles";
 
 export const Home = () => {
   const { dataEmployees, getDataEmployees } = useEmployees();
-  useEffect(() => {
-    getDataEmployees();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const [search, setSearch] = useState("");
 
@@ -33,7 +25,10 @@ export const Home = () => {
   }
 
   function formatPhone(phone: string) {
-    return phone.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+    return phone.replace(
+      /(\d{2})(\d{2})(\d{1})(\d{4})(\d{4})/,
+      "+$1 ($2) $3 $4-$5"
+    );
   }
 
   const filteredUsers = useMemo(() => {
@@ -74,14 +69,18 @@ export const Home = () => {
     },
   ];
 
-  return (
-    <>
-      <Container>
-        <Header />
-        <SearchInput value={search} onChange={handleSearch} />
+  useEffect(() => {
+    getDataEmployees();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-        <DataTableBase columns={columns} data={filteredUsers || []} />
-      </Container>
-    </>
+  return (
+    <Container>
+      <SearchContainer>
+        <Title>Funcionários</Title>
+        <SearchInput value={search} onChange={handleSearch} />
+      </SearchContainer>
+      <DataTableBase columns={columns} data={filteredUsers || []} />
+    </Container>
   );
 };

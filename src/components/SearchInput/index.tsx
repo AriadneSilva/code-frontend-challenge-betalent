@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
-import { InputWrapper, Input } from "./styles";
+import { Input } from "./styles";
+
 
 type Props = {
   value: string;
@@ -8,13 +9,11 @@ type Props = {
 
 export function SearchInput({ value, onChange }: Props) {
   return (
-    <InputWrapper>
-      <Input
-        type="text"
-        placeholder="Buscar por nome, cargo ou telefone..."
-        value={value}
-        onChange={onChange}
-      />
-    </InputWrapper>
+    <Input
+      type="text"
+      placeholder="Pesquisar"
+      value={value}
+      onChange={onChange}
+    />
   );
 }
