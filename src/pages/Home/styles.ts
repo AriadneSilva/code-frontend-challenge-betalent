@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface Props {
+  direction?: "row" | "column";
+}
+
 export const Container = styled.div`
   position: relative;
 
@@ -14,10 +18,11 @@ export const Container = styled.div`
   }
 `;
 
-export const SearchContainer = styled.div`
-  padding: 1rem;
+export const SearchContainer = styled.div<Props>`
+  padding: 1.5rem 1.5rem 0.5rem 1.5rem;
   display: flex;
   justify-content: space-between;
+  flex-direction: ${({ direction }) => direction};
 `;
 
 export const LoadingContainer = styled.div`

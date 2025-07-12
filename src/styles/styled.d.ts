@@ -31,20 +31,3 @@ declare module "styled-components" {
     };
   }
 }
-
-//  font: {
-//     family: {
-//       base: "'Roboto', sans-serif",
-//       heading: "'Helvetica', sans-serif",
-//     },
-//     size: {
-//       h1: "20px",
-//       h2: "16px",
-//       h3: "16px",
-//       base: "14px",
-//     },
-//     weight: {
-//       regular: 400,
-//       medium: 500,
-//     },
-//   },

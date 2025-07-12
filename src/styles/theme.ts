@@ -3,7 +3,7 @@ export const theme = {
   colors: {
     primary: "#0500FF",
     secondary: "#F5F5F5",
-    text: "#333",
+    text: "#1C1C1C",
     white: "#FFFFFF",
     border: "#DDD",
     tableHeader: "red",
@@ -34,10 +34,3 @@ export const theme = {
   },
 };
 
-// font-family: Helvetica Neue;
-// font-weight: 500;
-// font-style: Medium;
-// font-size: 20px;
-// leading-trim: NONE;
-// line-height: 100%;
-// letter-spacing: 0%;

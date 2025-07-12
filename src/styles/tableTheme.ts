@@ -37,11 +37,3 @@ export const getTableStyles = (theme: DefaultTheme) => ({
   },
 });
 
-// width: 375;
-// height: 317;
-// angle: 0 deg;
-// opacity: 1;
-// border-radius: 5px;
-// border-width: 1px;
-// border-style: dashed;
-// dashes: 10, 5;

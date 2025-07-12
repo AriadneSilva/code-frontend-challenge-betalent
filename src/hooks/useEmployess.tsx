@@ -12,6 +12,7 @@ import { api } from "../service/api";
 interface EmployeesContextData {
   dataEmployees: EmployeesData[];
   getDataEmployees: () => Promise<void>;
+  useIsMobile: () => boolean;
 }
 
 interface EmployeesProviderProps {
@@ -37,6 +38,21 @@ export const EmployeesProvider = ({ children }: EmployeesProviderProps) => {
     //setLoading(false);
   };
 
+  function useIsMobile(breakpoint = 768) {
+    const [isMobile, setIsMobile] = useState(window.innerWidth < breakpoint);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < breakpoint);
+      };
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, [breakpoint]);
+
+    return isMobile;
+  }
+
   // //USE EFFECT HOOKS
   useEffect(() => {
     const hydrate = async () => {
@@ -55,6 +71,7 @@ export const EmployeesProvider = ({ children }: EmployeesProviderProps) => {
       value={{
         dataEmployees,
         getDataEmployees,
+        useIsMobile,
       }}
     >
       {children}

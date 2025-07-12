@@ -1,35 +1,24 @@
 import React, { useMemo, useState, useEffect, ChangeEvent } from "react";
 import { TableColumn } from "react-data-table-component";
-
-import { SearchInput } from "../../components/SearchInput";
+import { SearchInputIcon } from "../../components/SearchInputIcon";
 import { DataTableBase } from "../../components/DataTableBase";
+import { List } from "../../components/List";
 
 import { useEmployees } from "../../hooks/useEmployess";
 import { EmployeesData } from "../../types/employees";
-
 import { Container, Avatar, SearchContainer, Title } from "./styles";
 
+import { formatDate, formatPhone } from "../../utils/utils";
+
 export const Home = () => {
-  const { dataEmployees, getDataEmployees } = useEmployees();
+  const { dataEmployees, getDataEmployees, useIsMobile } = useEmployees();
 
   const [search, setSearch] = useState("");
+  const isMobile = useIsMobile();
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
-
-  // criar um util.js depois
-  function formatDate(dateString: string) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR");
-  }
-
-  function formatPhone(phone: string) {
-    return phone.replace(
-      /(\d{2})(\d{2})(\d{1})(\d{4})(\d{4})/,
-      "+$1 ($2) $3 $4-$5"
-    );
-  }
 
   const filteredUsers = useMemo(() => {
     const lower = search.toLowerCase();
@@ -76,11 +65,15 @@ export const Home = () => {
 
   return (
     <Container>
-      <SearchContainer>
+      <SearchContainer direction={isMobile ? "column" : "row"}>
         <Title>Funcionários</Title>
-        <SearchInput value={search} onChange={handleSearch} />
+        <SearchInputIcon value={search} onChange={handleSearch} />
       </SearchContainer>
-      <DataTableBase columns={columns} data={filteredUsers || []} />
+      {isMobile ? (
+        <List dataEmployees={filteredUsers} />
+      ) : (
+        <DataTableBase columns={columns} data={filteredUsers || []} />
+      )}
     </Container>
   );
 };
