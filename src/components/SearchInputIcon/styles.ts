@@ -2,6 +2,12 @@ import styled from "styled-components";
 
 export const SearchContainerIcon = styled.div`
   position: relative;
+
+  @media (max-width: 768px) {
+    position: relative;
+    width: 100%;
+    padding: 0rem 0rem 1rem 0rem;
+  }
 `;
 
 export const Input = styled.input`
