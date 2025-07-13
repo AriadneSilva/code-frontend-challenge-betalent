@@ -26,17 +26,22 @@ export const EmployeesProvider = ({ children }: EmployeesProviderProps) => {
   //const [isLoading, setLoading] = useState(true);
   const [dataEmployees, setDataEmployees] = useState<EmployeesData[]>([]);
 
-  async function getEmployees(): Promise<EmployeesData[]> {
-    const response = await api.get("employees");
-    return response.data;
-  }
 
-  const getDataEmployees = async () => {
-    //setLoading(true);
-    const data = await getEmployees();
-    setDataEmployees(data as EmployeesData[]);
-    //setLoading(false);
-  };
+    async function getDataEmployees() {
+      try {
+        const response = await api.get("employees");
+        const data = response.data;
+
+        if (Array.isArray(data)) {
+          setDataEmployees(data);
+        } else {
+          setDataEmployees([]); // caso não venha como array
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+        setDataEmployees([]); // fallback em caso de erro
+      }
+    } 
 
   function useIsMobile(breakpoint = 768) {
     const [isMobile, setIsMobile] = useState(window.innerWidth < breakpoint);

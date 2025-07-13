@@ -14,6 +14,9 @@ export function DataTableBase<T>(props: TableProps<T>) {
         selectableRowsHighlight
         highlightOnHover={true}
         customStyles={customStyles}
+        noDataComponent={
+          <TableWrapper>Nenhum funcionário encontrado.</TableWrapper>
+        }
         {...props}
       />
     </TableWrapper>

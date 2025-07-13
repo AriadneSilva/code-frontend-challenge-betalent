@@ -24,7 +24,7 @@ export function Card({ employees }: Props) {
 
   return (
     <CardContainer>
-      <Header onClick={() => setOpen(!open)}>
+      <Header onClick={() => setOpen(!open)} title="headerCard">
         <Info>
           <Avatar src={employees.image} alt={employees.name} />
           <Value>{employees.name}</Value>
